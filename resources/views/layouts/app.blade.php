@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,21 +14,22 @@
     <!-- Styles -->
     <!-- Bootstrap Table CSS -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css">
-    <link href="/css/app.css" rel="stylesheet">
-    
-    
+
+    <link href= "{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" media="screen">
+
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+
     <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([
-            'csrfToken' => csrf_token(),
-        ]); ?>
+                                'csrfToken' => csrf_token(),
+                            ]); ?>
     </script>
-    
-    {{--     
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2wEaK7ov2WrNNicuJ33KNb6Xp4JGG93k&v=3.exp&sensor=false&libraries=places"></script> 
-    --}}
+
 
 </head>
+
 <body>
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
@@ -50,55 +52,82 @@
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     @if (!Auth::guest())
-                        <!-- Left Side Of Navbar -->
-                        <ul class="nav navbar-nav">
-                            &nbsp;
-                            <li><a href="{{ url('/candidates') }}">Candidates</a></li>
-                            <li><a href="{{ url('/jobs') }}">Jobs</a></li>
-                            <li><a href="{{ url('/companies') }}">Companies</a></li>
-                        </ul>
+                    <!-- Left Side Of Navbar -->
+                    <ul class="nav navbar-nav">
+                        &nbsp;
+                        <li><a href="{{ url('/candidates') }}">Candidates</a></li>
+                        <li><a href="{{ url('/jobs') }}">Jobs</a></li>
+                        <li><a href="{{ url('/companies') }}">Companies</a></li>
+                    </ul>
                     @endif
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="{{ url('/login') }}">Login</a></li>
-                            <li><a href="{{ url('/register') }}">Register</a></li>
+                        <li><a href="{{ url('/login') }}">Login</a></li>
+                        <li><a href="{{ url('/register') }}">Register</a></li>
                         @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                {{ Auth::user()->name }} <span class="caret"></span>
+                            </a>
 
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{ url('/logout') }}"
-                                            onclick="event.preventDefault();
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="{{ url('/logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
+                                        Logout
+                                    </a>
 
-                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
+                                    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                        {{ csrf_field() }}
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
                         @endif
                     </ul>
                 </div>
             </div>
         </nav>
+        <div class="container">
+            @yield('content')
 
-        @yield('content')
+        </div>
     </div>
 
     <!-- Scripts -->
     <script src="/js/app.js"></script>
     <!-- Bootstrap Table Javascript -->
+    <script type="text/javascript" src="{{ asset('jquery/jquery-1.8.3.min.js') }}" charset="UTF-8"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src= "{{ asset('js/bootstrap-datetimepicker.js') }}" charset="UTF-8"></script>
     <script src='/js/table.js'></script> <!-- file is in public/js/table.js -->
+   <script>
+    $('booking_time').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 0,
+        showMeridian: 1
+    });
+
+    $('#event_time').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 0,
+        showMeridian: 1
+    });
+</script>
 
 </body>
+
 </html>
