@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Event;
 use App\Menu;
+use App\DemoItem;
 use Illuminate\Http\Request;
 use DB;
+
 class EventController extends Controller
 {
     /**
@@ -25,10 +27,10 @@ class EventController extends Controller
      */
     public function create()
     {
-        $menu = Menu::pluck('name','id');
-        
+        $menu = Menu::pluck('name', 'id');
+
         return view('events.create')
-        ->with(compact('menu'));
+            ->with(compact('menu'));
     }
 
     /**
@@ -86,25 +88,34 @@ class EventController extends Controller
     {
         //
     }
-    public function action(Request $request){
-        if($request->menu_id){
-            $items = null;
-            $menu_id = $request->menu_id;
-            $itemsFetched = Menu::find($menu_id)->items;
-            foreach($itemsFetched as $item){
-                $items .=    '<tr id=item' . $item->id . ' class="active">
-                <td>' . $item->id . '</td>
+    public function action(Request $request)
+    {
+        $items = null;
+
+        if ($request->text) {
+            $item = new DemoItem();
+            $item->name = $request->text;
+            $item->save();
+            $itemsInserted = DemoItem::all();
+            // $menu_id = $request->menu_id;
+            // $itemsFetched = Menu::find($menu_id)->items;
+            $id =0;
+            foreach ($itemsInserted as $item) {
+                $items .=    '<tr id=item' .$id . ' class="active">
+                <td>' . $id . '</td>
                 <td>' . $item->name . '</td>
                 <td width="35%">
                 <button class="btn btn-warning btn-detail open_modal" value=' . $item->id . '>Edit</button>
                 <button class="btn btn-danger btn-delete delete-product" value=' . $item->id . '>Delete</button>
                 </td>
-                </tr>';
+              </tr>';
+            $id++;
             }
         }
         $data = array(
             'items'  => $items
         );
+
         return response()->json($data);
     }
 }

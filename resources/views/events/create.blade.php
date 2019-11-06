@@ -64,6 +64,21 @@
         </div>
     </div>
     <div class="clearfix"></div>
+
+    <div class="col-sm-3">
+        <div class="form-group">
+
+            {!! Form::label('add_item', 'Add Item', ['class' => 'control-label']) !!}
+            {!! Form::text('add_item', null,
+            [
+            'class' => 'form-control input-lg',
+            'placeholder' => 'add item'
+            ])
+            !!}
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
     <div class="col-md-5 col-md-offset-2">
         <table class="table table-striped table-hover ">
             <thead>
@@ -78,8 +93,6 @@
             </tbody>
         </table>
     </div>
-
-
 </div>
 
 {!! Form::close() !!}
@@ -90,14 +103,30 @@
 
 @section('customScripts')
 <script>
-    $("#menu_id").change(function() {
-        $.ajax({
-            url: "{{ route('events.action') }}?menu_id=" + $(this).val(),
-            method: 'GET',
-            success: function(data) {
-                $('#items-list').html(data.items);
-            }
-        });
+    $.ajaxSetup({
+
+        headers: {
+
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+        }
+
+    });
+    $("#add_item").on('keypress', function(e) {
+        if (e.which == 13) {
+            var text = $(this).val();
+            console.log(text);
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('events.action') }}",
+                data: {
+                    text: text
+                },
+                success: function(data) {
+                    $('#items-list').html(data.items);
+                }
+            });
+        }
     });
 </script>
 @endsection
