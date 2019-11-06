@@ -96,7 +96,6 @@
 
         </div>
     </div>
-
     <!-- Scripts -->
     <script src="/js/app.js"></script>
     <!-- Bootstrap Table Javascript -->
@@ -104,6 +103,9 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
     <script type="text/javascript" src= "{{ asset('js/bootstrap-datetimepicker.js') }}" charset="UTF-8"></script>
     <script src='/js/table.js'></script> <!-- file is in public/js/table.js -->
+    <!-- Custom Scripts -->
+    @yield('customScripts')
+
    <script>
     $('booking_time').datetimepicker({
         //language:  'fr',

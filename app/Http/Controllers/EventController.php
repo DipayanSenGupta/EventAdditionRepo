@@ -86,4 +86,25 @@ class EventController extends Controller
     {
         //
     }
+    public function action(Request $request){
+        if($request->menu_id){
+            $items = null;
+            $menu_id = $request->menu_id;
+            $itemsFetched = Menu::find($menu_id)->items;
+            foreach($itemsFetched as $item){
+                $items .=    '<tr id=item' . $item->id . ' class="active">
+                <td>' . $item->id . '</td>
+                <td>' . $item->name . '</td>
+                <td width="35%">
+                <button class="btn btn-warning btn-detail open_modal" value=' . $item->id . '>Edit</button>
+                <button class="btn btn-danger btn-delete delete-product" value=' . $item->id . '>Delete</button>
+                </td>
+                </tr>';
+            }
+        }
+        $data = array(
+            'items'  => $items
+        );
+        return response()->json($data);
+    }
 }

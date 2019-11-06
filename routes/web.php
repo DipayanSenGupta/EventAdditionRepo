@@ -13,3 +13,4 @@
 
 
 Route::resource('events', 'EventController');
+Route::get('/event/menu-change-action', 'EventController@action')->name('events.action');

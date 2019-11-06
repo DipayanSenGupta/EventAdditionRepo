@@ -32,8 +32,10 @@
 
     <div class="col-sm-3">
         <div class="form-group">
-            {!! Form::label('menu', 'Menu Type' . ':*') !!}
-            {!! Form::select('menu_id', $menu,'Select Menu', ['class' => 'form-control select2',  'placeholder' =>'Select Menu Type','required']); !!}
+            {!! Form::label('menu_id', 'Menu Type' . ':*') !!}
+            {!! Form::select('menu_id', $menu, null,['class' => 'form-control select2', 'placeholder' =>'Select Menu Type','required']); !!}
+
+
         </div>
     </div>
     <div class="clearfix"></div>
@@ -61,14 +63,41 @@
             </div>
         </div>
     </div>
+    <div class="clearfix"></div>
+    <div class="col-md-5 col-md-offset-2">
+        <table class="table table-striped table-hover ">
+            <thead>
+                <tr class="info">
+                    <th>ID </th>
+                    <th>Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="items-list" name="items-list">
+
+            </tbody>
+        </table>
+    </div>
 
 
+</div>
 
-
-    {!! Form::close() !!}
+{!! Form::close() !!}
 </div>
 </div>
 
+@endsection
 
-
+@section('customScripts')
+<script>
+    $("#menu_id").change(function() {
+        $.ajax({
+            url: "{{ route('events.action') }}?menu_id=" + $(this).val(),
+            method: 'GET',
+            success: function(data) {
+                $('#items-list').html(data.items);
+            }
+        });
+    });
+</script>
 @endsection
