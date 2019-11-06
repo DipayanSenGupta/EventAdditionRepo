@@ -91,25 +91,20 @@ class EventController extends Controller
     public function action(Request $request)
     {
         $items = null;
+        $item = new DemoItem();
 
         if ($request->text) {
-            $item = new DemoItem();
             $item->name = $request->text;
             $item->save();
             $itemsInserted = DemoItem::all();
-            // $menu_id = $request->menu_id;
-            // $itemsFetched = Menu::find($menu_id)->items;
-            $id =0;
             foreach ($itemsInserted as $item) {
-                $items .=    '<tr id=item' .$id . ' class="active">
-                <td>' . $id . '</td>
+                $items .=    '<tr data-id=' . $item->id . ' class="active">
+                <td>' . $item->id . '</td>
                 <td>' . $item->name . '</td>
                 <td width="35%">
-                <button class="btn btn-warning btn-detail open_modal" value=' . $item->id . '>Edit</button>
-                <button class="btn btn-danger btn-delete delete-product" value=' . $item->id . '>Delete</button>
+                <button class="btn btn-danger btn-delete delete-product" data-id=' . $item->id . '>Delete</button>
                 </td>
               </tr>';
-            $id++;
             }
         }
         $data = array(
@@ -117,5 +112,12 @@ class EventController extends Controller
         );
 
         return response()->json($data);
+    }
+    public function itemDel($id)
+    {
+        DemoItem::find($id)->delete($id);
+        return response()->json([
+            'success' => 'Record deleted successfully!'
+        ]);
     }
 }

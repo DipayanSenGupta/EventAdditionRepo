@@ -103,16 +103,14 @@
 
 @section('customScripts')
 <script>
-    $.ajaxSetup({
-
-        headers: {
-
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-
-        }
-
     });
+    
     $("#add_item").on('keypress', function(e) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
         if (e.which == 13) {
             var text = $(this).val();
             console.log(text);
@@ -128,5 +126,42 @@
             });
         }
     });
+
+    $(document).on('click', '.delete-product', function() {
+        var product_id = $(this).data("id")
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+        $.ajax({
+            type: "DELETE",
+            url: "/events/demoItemDelete/" + product_id,
+            success: function(data) {
+                console.log(data);
+                $("#" + product_id).remove();
+            },
+            error: function(data) {
+                console.log('Error:', data);
+            }
+        });
+    });
+
+    // $(".delete-product").click(function() {
+    //     var id = $(this).data("id");
+    //     var token = $("meta[name='csrf-token']").attr("content");
+    //     console.log(id);
+    //     $.ajax({
+    //         type: 'DELETE',
+    //         url: "/events/demoItemDelete/"+id,
+    //         data: {
+    //             "id": id,
+    //             "_token": token,
+    //         },
+    //         success: function(data) {
+    //             console.log("it Works");
+    //         }
+    //     });
+    // });
 </script>
 @endsection
