@@ -13,7 +13,7 @@
     <div class="col-sm-3">
         <div class="form-group">
             {!! Form::label('venu', 'Venue Type' . ':*') !!}
-            {!! Form::select('venue', ['Sena Maloncho' => __('Sena Maloncho'), 'PSC' => 'PSC', 'RAWA' => 'RAWA'], null, ['class' => 'form-control select2', 'placeholder' => __('Select Event Type'), 'required']); !!}
+            {!! Form::select('venue', ['Sena Maloncho' => __('Sena Maloncho'), 'PSC' => 'PSC', 'RAWA' => 'RAWA'], null, ['class' => 'form-control select2', 'placeholder' => 'Select Event Type', 'required']); !!}
         </div>
     </div>
 
@@ -93,9 +93,20 @@
             </tbody>
         </table>
     </div>
-</div>
+    <div class="clearfix"></div>
+    <div class="col-md-3 col-md-offset-3">
+        <!-- <button type="button" id="submit" class="btn btn-primary">Submit</button> -->
+        <div class="form-group">
+            {!! Form::submit('Add Customer',
+            ['class' => 'btn btn-info btn-lg',
+            'style' => 'width:100%'
+            ])
+            !!}
 
-{!! Form::close() !!}
+        </div>
+    </div>
+
+    {!! Form::close() !!}
 </div>
 </div>
 
@@ -147,6 +158,11 @@
                 console.log('Error:', data);
             }
         });
+    });
+
+    $('button#submit').click(function() {
+            sell_form.submit();
+        }
     });
 </script>
 @endsection

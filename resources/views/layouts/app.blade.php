@@ -107,7 +107,7 @@
     @yield('customScripts')
 
    <script>
-    $('booking_time').datetimepicker({
+    $('#booking_time').datetimepicker({
         //language:  'fr',
         weekStart: 1,
         todayBtn:  1,

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Event;
 use App\Menu;
 use App\DemoItem;
+use App\CustomMenu;
+
 use Illuminate\Http\Request;
 use DB;
 
@@ -41,7 +43,25 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $name = 'Event';
+        $number = rand(1,100);
+        $event = new Event;
+
+        $event->name = $name+$number;
+        $event->type = $request->type;
+        $event->venue = $request->venue;
+        $event->attendence = $request->attendence;
+        $event->booking_time = $request->attendence;
+        $event->event_time = $request->attendence;
+        if ($event->save()) {
+            $customMenu = new CustomMenu;
+            $customMenu->name = Menu::find($request->menu_id)->name;
+            $customMenu->event_id = $event->id;
+            $customMenu->save();
+            if ($customMenu->save()) {
+                return view('events.create');
+            }
+        }
     }
 
     /**
