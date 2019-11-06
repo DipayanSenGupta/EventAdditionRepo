@@ -103,8 +103,19 @@
 
 @section('customScripts')
 <script>
-    });
-    
+    function addItem(text) {
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ route('events.action') }}",
+            data: {
+                text: text
+            },
+            success: function(data) {
+                $('#items-list').html(data.items);
+            }
+        });
+    }
     $("#add_item").on('keypress', function(e) {
         $.ajaxSetup({
             headers: {
@@ -114,21 +125,12 @@
         if (e.which == 13) {
             var text = $(this).val();
             console.log(text);
-            $.ajax({
-                type: 'POST',
-                url: "{{ route('events.action') }}",
-                data: {
-                    text: text
-                },
-                success: function(data) {
-                    $('#items-list').html(data.items);
-                }
-            });
+            addItem(text);
         }
     });
 
     $(document).on('click', '.delete-product', function() {
-        var product_id = $(this).data("id")
+        var product_id = $(this).attr("id")
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -139,29 +141,12 @@
             url: "/events/demoItemDelete/" + product_id,
             success: function(data) {
                 console.log(data);
-                $("#" + product_id).remove();
+                addItem(null);
             },
             error: function(data) {
                 console.log('Error:', data);
             }
         });
     });
-
-    // $(".delete-product").click(function() {
-    //     var id = $(this).data("id");
-    //     var token = $("meta[name='csrf-token']").attr("content");
-    //     console.log(id);
-    //     $.ajax({
-    //         type: 'DELETE',
-    //         url: "/events/demoItemDelete/"+id,
-    //         data: {
-    //             "id": id,
-    //             "_token": token,
-    //         },
-    //         success: function(data) {
-    //             console.log("it Works");
-    //         }
-    //     });
-    // });
 </script>
 @endsection

@@ -97,15 +97,17 @@ class EventController extends Controller
             $item->name = $request->text;
             $item->save();
             $itemsInserted = DemoItem::all();
-            foreach ($itemsInserted as $item) {
-                $items .=    '<tr data-id=' . $item->id . ' class="active">
-                <td>' . $item->id . '</td>
-                <td>' . $item->name . '</td>
-                <td width="35%">
-                <button class="btn btn-danger btn-delete delete-product" data-id=' . $item->id . '>Delete</button>
-                </td>
-              </tr>';
-            }
+        } else {
+            $itemsInserted = DemoItem::all();
+        }
+        foreach ($itemsInserted as $item) {
+            $items .=    '<tr data-id=' . $item->id . ' class="active">
+            <td>' . $item->id . '</td>
+            <td>' . $item->name . '</td>
+            <td width="35%">
+            <button class="btn btn-danger btn-delete delete-product" id=' . $item->id . '>Delete</button>
+            </td>
+          </tr>';
         }
         $data = array(
             'items'  => $items
