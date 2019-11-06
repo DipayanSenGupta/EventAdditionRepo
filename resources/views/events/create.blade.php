@@ -5,14 +5,14 @@
     {!! Form::open(['route' => 'events.store'], ['class' => 'form']) !!}
     <div class="col-sm-3">
         <div class="form-group">
-            {!! Form::label('type', 'Type' . ':*') !!}
-            {!! Form::select('type', ['Bia' => __('Bia'), 'Holud' => 'Holud'], null, ['class' => 'form-control select2', 'placeholder' => __('Select Event Type'), 'required']); !!}
+            {!! Form::label('type', 'Event Type' . ':*') !!}
+            {!! Form::select('type', ['Bia' => __('Bia'), 'Holud' => 'Holud'], null, ['class' => 'form-control select2', 'placeholder' =>'Select Event Type', 'required']); !!}
         </div>
     </div>
 
     <div class="col-sm-3">
         <div class="form-group">
-            {!! Form::label('venu', 'Type' . ':*') !!}
+            {!! Form::label('venu', 'Venue Type' . ':*') !!}
             {!! Form::select('venue', ['Sena Maloncho' => __('Sena Maloncho'), 'PSC' => 'PSC', 'RAWA' => 'RAWA'], null, ['class' => 'form-control select2', 'placeholder' => __('Select Event Type'), 'required']); !!}
         </div>
     </div>
@@ -32,8 +32,8 @@
 
     <div class="col-sm-3">
         <div class="form-group">
-            {!! Form::label('menu', 'Type' . ':*') !!}
-            {!! Form::select('menu', $menu, null, ['class' => 'form-control select2', 'placeholder' => __('Select Menu'), 'required']); !!}
+            {!! Form::label('menu', 'Menu Type' . ':*') !!}
+            {!! Form::select('menu_id', $menu,'Select Menu', ['class' => 'form-control select2',  'placeholder' =>'Select Menu Type','required']); !!}
         </div>
     </div>
     <div class="clearfix"></div>
@@ -45,7 +45,7 @@
                 <span class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                 </span>
-                {!! Form::text('booking_time', null, ['class' => 'form-control', 'readonly', 'required']); !!}
+                {!! Form::text('booking_time', null, ['class' => 'form-control', 'readonly','required']); !!}
             </div>
         </div>
     </div>

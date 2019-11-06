@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Event;
 use App\Menu;
 use Illuminate\Http\Request;
-
+use DB;
 class EventController extends Controller
 {
     /**
@@ -25,12 +25,10 @@ class EventController extends Controller
      */
     public function create()
     {
-        // $menu = ['hello','how'.'are','you'];
-        $menu = Menu::all();
+        $menu = Menu::pluck('name','id');
+        
         return view('events.create')
-        ->with(compact(
-            'menu'
-        ));
+        ->with(compact('menu'));
     }
 
     /**
