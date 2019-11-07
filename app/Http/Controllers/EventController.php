@@ -30,7 +30,7 @@ class EventController extends Controller
     public function create()
     {
         $menu = Menu::pluck('name', 'id');
-
+        dd($menu);
         return view('events.create')
             ->with(compact('menu'));
     }

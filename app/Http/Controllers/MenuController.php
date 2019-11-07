@@ -14,9 +14,9 @@ class MenuController extends Controller
      */
     public function index()
     {
-       $menu = Menu::pluck('name', 'id');
-       dd($menu);
-        return view('menus.index')>with(compact('menu'));
+        // $menu = Menu::pluck('name', 'id');
+        // return view('menus.index') 
+        // ->with(compact('menu'));
     }
 
     /**
@@ -25,7 +25,11 @@ class MenuController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    {   
+        $menu = Menu::pluck('name', 'id');
+        
+        return view('menus.create')
+        ->with(compact('menu'));
     }
 
     /**
@@ -87,26 +91,22 @@ class MenuController extends Controller
     public function action(Request $request)
     {
         $items = null;
-     if($request->menu_id){
-         $menu_id = $request->menu_id;
-         $items = Menu::find($menu_id)->items;
-     }
-     else{
-         $items = Menu::find(1)->items;
-     }
-     foreach ($items as $item) {
-        $items .=    '<tr data-id=' . $item->id . ' class="active">
+        if ($request->text) {
+            $menu_id = $request->text;
+            $items = Menu::find($menu_id)->items;
+        }
+        foreach ($items as $item) {
+            $items .=    '<tr data-id=' . $item->id . ' class="active">
         <td>' . $item->id . '</td>
         <td>' . $item->name . '</td>
         <td width="35%">
         <button class="btn btn-danger btn-delete delete-product" id=' . $item->id . '>Delete</button>
         </td>
       </tr>';
-    }
-    $data = array(
-        'items'  => $items
-    );
-    dd($items);
-    return response()->json($data);
+        }
+        $data = array(
+            'items'  => $items
+        );
+        return response()->json($data);
     }
 }
