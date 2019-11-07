@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Menu;
+use App\Item;
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
@@ -91,8 +92,23 @@ class MenuController extends Controller
     public function action(Request $request)
     {
         $items = null;
-        if ($request->text) {
-            $menu_id = $request->text;
+        if($request->add){
+            $item_name = $request->add;
+            $menu_id = $request->menu_id;
+            $item = new Item();
+            $item->name = $item_name;
+            $item->menu_id = $menu_id;
+            $item->save();
+            $items = Menu::find($menu_id)->items;
+        }
+        else if ($request->menu_id) {
+            $menu_id = $request->menu_id;
+            $items = Menu::find($menu_id)->items;
+        }
+        else if($request->delete_id){
+            $delete_id = $request->delete_id;
+            $menu_id = $request->menu_id;
+            Menu::find($menu_id)->items()->detach($delete_id);
             $items = Menu::find($menu_id)->items;
         }
         foreach ($items as $item) {

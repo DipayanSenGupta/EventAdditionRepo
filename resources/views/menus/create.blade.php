@@ -64,12 +64,12 @@
 @section('customScripts')
 <script>
     $(document).ready(function() {
-        function showItem(text = "1") {
+        function showItem(menu_id = "1") {
             $.ajax({
                 type: 'POST',
                 url: "{{ route('menus.action') }}",
                 data: {
-                    text: text,
+                    menu_id: menu_id,
                     "_token": "{{ csrf_token() }}"
                 },
                 success: function(data) {
@@ -77,16 +77,20 @@
                 }
             });
         }
+
         $("#add_item").on('keypress', function(e) {
+            e.preventDefault();
             if (e.which == 13) {
-                var text = $(this).val();
-                console.log(text);
+                var itemName = $(this).val();
+                var menu_id = $("#menu_id").val();
+                console.log(menu_id);
 
                 $.ajax({
                     type: 'POST',
-                    url: "{{ route('events.action') }}",
+                    url: "{{ route('menus.action') }}",
                     data: {
-                        add: text,
+                        add: itemName,
+                        menu_id: menu_id,
                         "_token": "{{ csrf_token() }}"
 
                     },
@@ -96,11 +100,17 @@
                 });
             }
         });
-        $(document).on('click', '.delete-product', function() {
+        $('.delete-product').click(function() {
+            e.preventDefault();
             var product_id = $(this).attr("id")
             $.ajax({
                 type: "DELETE",
-                url: "/events/demoItemDelete/" + product_id,
+                url: "{{ route('menus.action') }}",
+                data: {
+                    delete_id: product_id,
+                    menu_id: menu_id,
+                    "_token": "{{ csrf_token() }}"
+                },
                 success: function(data) {
                     console.log(data);
                     addItem(null);
@@ -110,9 +120,10 @@
                 }
             });
         });
+
         $("#menu_id").change(function() {
-            var text = $(this).val();
-            showItem(text)
+            var menu_id = $(this).val();
+            showItem(menu_id)
         });
         showItem();
     });
