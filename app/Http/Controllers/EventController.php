@@ -135,6 +135,7 @@ class EventController extends Controller
 
         return response()->json($data);
     }
+    
     public function itemDel($id)
     {
         DemoItem::find($id)->delete($id);
