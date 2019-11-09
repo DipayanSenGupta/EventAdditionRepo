@@ -1,15 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Event;
 use App\Menu;
 use App\DemoItem;
 use App\CustomMenu;
-
 use Illuminate\Http\Request;
 use DB;
-
 class EventController extends Controller
 {
     /**
@@ -21,7 +17,6 @@ class EventController extends Controller
     {
         //
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -30,11 +25,9 @@ class EventController extends Controller
     public function create()
     {
         $menu = Menu::pluck('name', 'id');
-        dd($menu);
         return view('events.create')
             ->with(compact('menu'));
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -46,7 +39,6 @@ class EventController extends Controller
         $name = 'Event';
         $number = rand(1,100);
         $event = new Event;
-
         $event->name = $name+$number;
         $event->type = $request->type;
         $event->venue = $request->venue;
@@ -63,7 +55,6 @@ class EventController extends Controller
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -74,7 +65,6 @@ class EventController extends Controller
     {
         //
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -85,7 +75,6 @@ class EventController extends Controller
     {
         //
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -97,7 +86,6 @@ class EventController extends Controller
     {
         //
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -112,7 +100,6 @@ class EventController extends Controller
     {
         $items = null;
         $item = new DemoItem();
-
         if ($request->text) {
             $item->name = $request->text;
             $item->save();
@@ -132,10 +119,8 @@ class EventController extends Controller
         $data = array(
             'items'  => $items
         );
-
         return response()->json($data);
     }
-    
     public function itemDel($id)
     {
         DemoItem::find($id)->delete($id);

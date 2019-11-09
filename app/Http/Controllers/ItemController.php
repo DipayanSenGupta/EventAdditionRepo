@@ -80,6 +80,5 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        //
     }
 }

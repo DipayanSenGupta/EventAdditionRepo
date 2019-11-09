@@ -115,7 +115,6 @@
 @section('customScripts')
 <script>
     function addItem(text) {
-
         $.ajax({
             type: 'POST',
             url: "{{ route('events.action') }}",
@@ -139,7 +138,6 @@
             addItem(text);
         }
     });
-
     $(document).on('click', '.delete-product', function() {
         var product_id = $(this).attr("id")
         $.ajaxSetup({
@@ -159,7 +157,6 @@
             }
         });
     });
-
     $('button#submit').click(function() {
             sell_form.submit();
         }

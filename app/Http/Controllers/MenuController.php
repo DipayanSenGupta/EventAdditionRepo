@@ -15,9 +15,7 @@ class MenuController extends Controller
      */
     public function index()
     {
-        // $menu = Menu::pluck('name', 'id');
-        // return view('menus.index') 
-        // ->with(compact('menu'));
+
     }
 
     /**
@@ -27,10 +25,10 @@ class MenuController extends Controller
      */
     public function create()
     {   
-        $menu = Menu::pluck('name', 'id');
+        $menus = Menu::pluck('name', 'id');
         
         return view('menus.create')
-        ->with(compact('menu'));
+        ->with(compact('menus'));
     }
 
     /**
@@ -92,6 +90,8 @@ class MenuController extends Controller
     public function action(Request $request)
     {
         $items = null;
+        $newMenuId = null;
+        $newMenuName = null;
         if($request->add){
             $item_name = $request->add;
             $menu_id = $request->menu_id;
@@ -100,29 +100,51 @@ class MenuController extends Controller
             $item->menu_id = $menu_id;
             $item->save();
             $items = Menu::find($menu_id)->items;
+        }else if($request->itemId && $request->menu_id ){
+            $menu_id = $request->menu_id;
+            $delete_id = $request->itemId;
+            $item = Item::find($delete_id);
+            Item::find($delete_id)->delete();
+            $items = Menu::find($menu_id)->items;
+        }
+        else if ($request->menuName) {
+            $menu = new Menu();
+            $menu->name = $request->menuName;
+            if($menu->save()){
+                $newMenuId = $menu->id;
+                $newMenuName = $menu->name;
+            }
+            $items = null;
         }
         else if ($request->menu_id) {
             $menu_id = $request->menu_id;
             $items = Menu::find($menu_id)->items;
         }
-        else if($request->delete_id){
-            $delete_id = $request->delete_id;
-            $menu_id = $request->menu_id;
-            Menu::find($menu_id)->items()->detach($delete_id);
-            $items = Menu::find($menu_id)->items;
+        // $menus = Menu::pluck('name', 'id');
+        if($items){
+            foreach ($items as $item) {
+                $items .=    '<tr id="item' . $item->id . ' class="active">
+            <td>' . $item->id . '</td>
+            <td>' . $item->name . '</td>
+            <td width="35%">
+            <button
+            class="btn btn btn-danger" id = "deleteItem" value=' . $item->id . '>Delete</button>
+            </td>
+          </tr>';
+            }
         }
-        foreach ($items as $item) {
-            $items .=    '<tr data-id=' . $item->id . ' class="active">
-        <td>' . $item->id . '</td>
-        <td>' . $item->name . '</td>
-        <td width="35%">
-        <button class="btn btn-danger btn-delete delete-product" id=' . $item->id . '>Delete</button>
-        </td>
-      </tr>';
+        else{
+            '<tr id="item' .' class="active">
+            <td> No item to show' .'</td>
+          </tr>';
         }
+
         $data = array(
-            'items'  => $items
+            'items'  => $items,
+            'newMenuId'  => $newMenuId,
+            'newMenuName' => $newMenuName
         );
         return response()->json($data);
     }
+
 }
