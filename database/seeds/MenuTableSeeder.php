@@ -11,8 +11,9 @@ class MenuTableSeeder extends Seeder
      */
     public function run()
     {
+        
         \DB::table('menus')->insert([
-        	'name' => 'Chinese',
+            'name' => 'Chinese',
         ]);
         \DB::table('menus')->insert([
         	'name' => 'Korean',

@@ -11,6 +11,8 @@ class ItemTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('items')->truncate();
+
         \DB::table('items')->insert([
         	'menu_id' => 1,
         	'name' => 'Chinese Chicken'
