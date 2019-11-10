@@ -123,7 +123,7 @@ class MenuController extends Controller
         // $menus = Menu::pluck('name', 'id');
         if($items){
             foreach ($items as $item) {
-                $items .=    '<tr id="item' . $item->id . ' class="active">
+                $items.=    '<tr id="item' . $item->id . ' class="active">
             <td>' . $item->id . '</td>
             <td>' . $item->name . '</td>
             <td width="35%">

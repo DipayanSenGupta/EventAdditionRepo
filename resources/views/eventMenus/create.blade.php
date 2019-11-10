@@ -15,11 +15,11 @@
     <div class="col-sm-3">
         <div class="form-group">
 
-            {!! Form::label('add_item', 'Add Extra item (exclusive to the event)', ['class' => 'control-label']) !!}
-            {!! Form::text('add_item', null,
+            {!! Form::label('add_extra_item', 'Add Extra item (exclusive to the event)', ['class' => 'control-label']) !!}
+            {!! Form::text('add_extra_item', null,
             [
             'class' => 'form-control input-lg',
-            'placeholder' => 'add item'
+            'placeholder' => 'add extra item'
             ])
             !!}
         </div>
@@ -161,15 +161,16 @@
                     "_token": "{{ csrf_token() }}"
                 },
                 success: function(data) {
+                    console.log(data);
                     $('#items-list').html(data.items);
-                    console.log(data);j
+                    console.log(data);
                     if(data.addedItems){
                         $('#added-items-list').html(data.addedItems);
                     }
                 }
             });
         }
-
+        
         $(document).on('click', "#addItem", function(e) {
             try {
                 var item_id = $(this).val();;
@@ -180,6 +181,33 @@
             }
             e.preventDefault();
         });
+
+        // function addExtraItem(add_extra_item,menu_id) {
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: "{{ route('eventMenus.action') }}",
+        //         data: {
+        //             add_extra_item: add_extra_item,
+        //             menu_id: menu_id,
+        //             "_token": "{{ csrf_token() }}"
+        //         },
+        //         success: function(data) {
+        //             $('#items-list').html(data.items);
+        //             console.log(data);j
+        //             if(data.addedItems){
+        //                 $('#added-items-list').html(data.addedItems);
+        //             }
+        //         }
+        //     });
+        // }
+        // $("#add_extra_item").on('keypress', function(e) {
+        //     var add_extra_item = $(this).val();
+        //     var menu_id = $("#menu_id").val();
+        //     if (e.which == 13) {
+        //         addExtraItem(add_extra_item, menu_id);
+        //     }
+        // });
+
 
         function deleteItem(item_id, menu_id) {
             $.ajax({

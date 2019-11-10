@@ -108,8 +108,6 @@ class EventMenuController extends Controller
             }
             $cacheItemsFetch = CacheItem::pluck('name');
             $items = $items->diff(Item::whereIn('name',$cacheItemsFetch)->get());
-            // $results = DB::select( DB::raw("SELECT * FROM items WHERE some_col = '$someVariable'") );
-
         }
         elseif($request->delete && $request->menu_id ){
             $menu_id = $request->menu_id;
@@ -146,7 +144,7 @@ class EventMenuController extends Controller
             }
         }
         else{
-            $items.= '<tr id="item' .' class="active">
+            $items .= '<tr id="item' .' class="active">
             <td> No item to show' .'</td>
           </tr>';
         }
@@ -163,15 +161,13 @@ class EventMenuController extends Controller
             }  
         }
         else{
-            $addedItems.= '<tr id="item' . ' class="active">
+            $addedItems .= '<tr id="item' . ' class="active">
             <td> No item to show' .'</td>
           </tr>';
         }
 
         $data = array(
             'items'  => $items,
-            'newMenuId'  => $newMenuId,
-            'newMenuName' => $newMenuName,
             'addedItems' => $addedItems,
         );
         return response()->json($data);
