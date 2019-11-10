@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\EventMenu;
 use App\Menu;
+use App\CacheItem;
+use App\Item;
 
 use Illuminate\Http\Request;
 
@@ -88,6 +90,90 @@ class EventMenuController extends Controller
         //
     }
     public function action(Request $request){
+        $items = null;
+        $newMenuId = null;
+        $newMenuName = null;
+        $addedItems = null;
+   
+        if($request->add && $request->menu_id ){
+            $menu_id = $request->menu_id;
+            $add_id = $request->add;
+            $item = Item::find($add_id);
+            $newItemToMenu = new CacheItem();
+            $newItemToMenu->name = $item->name;
+            $newItemToMenu->save();
+            $items = Menu::find($menu_id)->items;
+            if(CacheItem::all()){
+                $addedItems = CacheItem::all();
+            }
+            $cacheItemsFetch = CacheItem::pluck('name');
+            $items = $items->diff(Item::whereIn('name',$cacheItemsFetch)->get());
+            // $results = DB::select( DB::raw("SELECT * FROM items WHERE some_col = '$someVariable'") );
 
+        }
+        elseif($request->delete && $request->menu_id ){
+            $menu_id = $request->menu_id;
+            $delete_id = $request->delete;
+            $cacheitem = CacheItem::find($delete_id);
+            $cacheitem->delete();
+
+            $items = Menu::find($menu_id)->items;
+            if(CacheItem::all()){
+                $addedItems = CacheItem::all();
+            }
+            $cacheItemsFetch = CacheItem::pluck('name');
+            $items = $items->diff(Item::whereIn('name',$cacheItemsFetch)->get());
+        }
+        else if ($request->menu_id) {
+            $menu_id = $request->menu_id;
+            $items = Menu::find($menu_id)->items;
+            if(CacheItem::all()){
+                $addedItems = CacheItem::all();
+            }
+            $cacheItemsFetch = CacheItem::pluck('name');
+            $items = $items->diff(Item::whereIn('name',$cacheItemsFetch)->get());
+        }
+        if($items){
+            foreach ($items as $item) {
+                $items .=    '<tr id="item' . $item->id . ' class="active">
+            <td>' . $item->id . '</td>
+            <td>' . $item->name . '</td>
+            <td width="35%">
+            <button
+            class="btn btn-primary" id = "addItem" value=' . $item->id . '>Add</button>
+            </td>
+          </tr>';
+            }
+        }
+        else{
+            $items.= '<tr id="item' .' class="active">
+            <td> No item to show' .'</td>
+          </tr>';
+        }
+        if($addedItems){
+            foreach ($addedItems as $item) {
+                $addedItems .=    '<tr id="item' . $item->id . ' class="active">
+            <td>' . $item->id . '</td>
+            <td>' . $item->name . '</td>
+            <td width="35%">
+            <button
+            class="btn btn-danger" id = "deleteItem" value=' . $item->id . '>Delete</button>
+            </td>
+          </tr>';
+            }  
+        }
+        else{
+            $addedItems.= '<tr id="item' . ' class="active">
+            <td> No item to show' .'</td>
+          </tr>';
+        }
+
+        $data = array(
+            'items'  => $items,
+            'newMenuId'  => $newMenuId,
+            'newMenuName' => $newMenuName,
+            'addedItems' => $addedItems,
+        );
+        return response()->json($data);
     }
 }
