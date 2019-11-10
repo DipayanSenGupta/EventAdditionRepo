@@ -17,6 +17,9 @@ class CreateItemsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->integer('menu_id');
+            // $table->foreign('menu_id')
+            // ->references('id')->on('menus')
+            // ->onDelete('cascade');
             $table->timestamps();
         });
     }

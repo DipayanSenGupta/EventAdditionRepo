@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCompaniesTable extends Migration
+class CreateEventMenuItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateCompaniesTable extends Migration
      */
     public function up()
     {
-        Schema::create('companies', function (Blueprint $table) {
+        Schema::create('event_menu_items', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('name');
-            $table->text('city');
-            $table->text('state');
-            $table->text('website');
+            $table->string('name');
+            $table->integer('event_menu_id');
+            // $table->foreign('event_menu_id')
+            // ->references('id')->on('event_menus')
+            // ->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateCompaniesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('companies');
+        Schema::dropIfExists('event_menu_items');
     }
 }
