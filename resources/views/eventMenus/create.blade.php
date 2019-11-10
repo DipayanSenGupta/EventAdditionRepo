@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    
+
     <div class="col-sm-3">
         <div class="form-group">
 
@@ -33,28 +33,38 @@
             {!! Form::text('event_name', null,
             [
             'class' => 'form-control input-lg',
-            'placeholder' => 'add item'
-            ])
-            !!}
-        </div>
-    </div>
-
-    <div class="col-sm-3">
-        <div class="form-group">
-
-            {!! Form::label('add_menu', 'Add Menu', ['class' => 'control-label']) !!}
-            {!! Form::text('add_menu', null,
-            [
-            'class' => 'form-control input-lg',
-            'placeholder' => 'add Event Name'
+            'placeholder' => 'Event Name'
             ])
             !!}
         </div>
     </div>
 
     <div class="clearfix"></div>
+    <div class="col-md-3">
+        <div class="form-group">
+            {!! Form::label('booking_time', 'Booking Time'. ':*') !!}
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
+                {!! Form::text('booking_time', null, ['class' => 'form-control', 'readonly','required']); !!}
+            </div>
+        </div>
+    </div>
 
-    <div class="col-md-5 col-md-offset-2">
+    <div class="col-md-3">
+        <div class="form-group">
+            {!! Form::label('event_time', 'Event Time'. ':*') !!}
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </span>
+                {!! Form::text('event_time', null, ['class' => 'form-control', 'readonly', 'required']); !!}
+            </div>
+        </div>
+    </div>
+<div class="clearfix"></div> 
+    <div class="col-md-3 col-md-offset-2">
         <table class="table table-striped table-hover ">
             <thead>
                 <tr class="info">
@@ -68,6 +78,22 @@
             </tbody>
         </table>
     </div>
+
+    <div class="col-md-3 col-md-offset-2">
+        <table class="table table-striped table-hover ">
+            <thead>
+                <tr class="info">
+                    <th>ID </th>
+                    <th>Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="added-items-list" name="added-items-list">
+
+            </tbody>
+        </table>
+    </div>
+
     <div class="clearfix"></div>
 
     {!! Form::close() !!}
@@ -76,112 +102,113 @@
 
 @endsection
 @section('customScripts')
-<!-- <script>
+<script>
     $(document).ready(function() {
         function showItem(menu_id = "1") {
             $.ajax({
                 type: 'POST',
-                url: "{{ route('menus.action') }}",
+                url: "{{ route('eventMenus.action') }}",
                 data: {
                     menu_id: menu_id,
                     "_token": "{{ csrf_token() }}"
                 },
                 success: function(data) {
                     $('#items-list').html(data.items);
-                }
-            });
-        }
-
-        function addItem(menu_id, itemName) {
-            $.ajax({
-                type: 'POST',
-                url: "{{ route('menus.action') }}",
-                data: {
-                    add: itemName,
-                    menu_id: menu_id,
-                    "_token": "{{ csrf_token() }}"
-                },
-                success: function(data) {
-                    $('#items-list').html(data.items);
-                }
-            });
-        }
-
-
-        function addMenu(menuName) {
-            $.ajax({
-                type: 'POST',
-                url: "{{ route('menus.action') }}",
-                data: {
-                    menuName: menuName,
-                    "_token": "{{ csrf_token() }}"
-                },
-                success: function(data) {
-                    $('#items-list').html(data.items);
-                    if(data.newMenuId){
-                        $('#menu_id').append($('<option>', {
-                        value: data.newMenuId,
-                        text: data.newMenuName
-                    }));
-                    $("#menu_id").val(data.newMenuId)
-                    showItem(data.newMenuId);
+                    if(data.addedItems){
+                        $('#added-items-list').html(data.addedItems);
                     }
                 }
             });
         }
-
-        function deleteItem(itemId, menu_id) {
-            console.log(itemId);
-
-            $.ajax({
-                type: 'POST',
-                url: "{{ route('menus.action') }}",
-                data: {
-                    itemId: itemId,
-                    menu_id: menu_id,
-                    "_token": "{{ csrf_token() }}"
-                },
-                success: function(data) {
-                    $('#items-list').html(data.items);
-                }
-            });
-        }
-        $("#add_item").on('keypress', function(e) {
-            if (e.which == 13) {
-                var itemName = $(this).val();
-                var menu_id = $("#menu_id").val();
-                console.log(menu_id);
-                e.preventDefault();
-                addItem(menu_id, itemName);
-            }
-        });
-
-        $("#add_menu").on('keypress', function(e) {
-            var menuName = $(this).val();
-            if (e.which == 13) {
-                var itemName = $(this).val();
-                e.preventDefault();
-                addMenu(menuName);
-            }
-        });
-
-        $(document).on('click', "#deleteItem", function(e) {
-            try {
-                var itemId = $(this).val();;
-                var menu_id = $("#menu_id").val();
-                deleteItem(itemId, menu_id);
-            } catch (ex) {
-                alert('An error occurred and I need to write some code to handle this!');
-            }
-            e.preventDefault();
-        });
-
 
         $("#menu_id").change(function() {
             var menu_id = $(this).val();
             showItem(menu_id)
         });
         showItem();
+
+        function addEvent(event_name, menu_id) {
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('eventMenus.action') }}",
+                data: {
+                    event_name: event_name,
+                    menu_id: menu_id,
+                    "_token": "{{ csrf_token() }}"
+                },
+                success: function(data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        $("#event_name").on('keypress', function(e) {
+            var event_name = $(this).val();
+            var menu_id = $("#menu_id").val();
+            if (e.which == 13) {
+                e.preventDefault();
+                addEvent(event_name, menu_id);
+            }
+        });
+
+        function addItem(item_id,menu_id) {
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('eventMenus.action') }}",
+                data: {
+                    add: item_id,
+                    menu_id: menu_id,
+                    "_token": "{{ csrf_token() }}"
+                },
+                success: function(data) {
+                    $('#items-list').html(data.items);
+                    console.log(data);j
+                    if(data.addedItems){
+                        $('#added-items-list').html(data.addedItems);
+                    }
+                }
+            });
+        }
+
+        $(document).on('click', "#addItem", function(e) {
+            try {
+                var item_id = $(this).val();;
+                var menu_id = $("#menu_id").val();
+                addItem(item_id, menu_id);
+            } catch (ex) {
+                alert('An error occurred and I need to write some code to handle this!');
+            }
+            e.preventDefault();
+        });
+
+        function deleteItem(item_id, menu_id) {
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('eventMenus.action') }}",
+                data: {
+                    delete: item_id,
+                    menu_id: menu_id,
+                    "_token": "{{ csrf_token() }}"
+                },
+                success: function(data) {
+                    $('#items-list').html(data.items);
+                    if(data.addedItems){
+                        $('#added-items-list').html(data.addedItems);
+                    }
+                }
+            });
+        }
+
+        $(document).on('click', "#deleteItem", function(e) {
+            try {
+                var item_id = $(this).val();
+                var menu_id = $("#menu_id").val();
+                deleteItem(item_id, menu_id);
+            } catch (ex) {
+                alert('An error occurred and I need to write some code to handle this!');
+            }
+            e.preventDefault();
+        });
     });
-</script> -->
+</script>
 @endsection
