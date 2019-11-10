@@ -134,7 +134,7 @@ class MenuController extends Controller
             }
         }
         else{
-            '<tr id="item' .' class="active">
+           $items.= '<tr id="item' .' class="active">
             <td> No item to show' .'</td>
           </tr>';
         }
