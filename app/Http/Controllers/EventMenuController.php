@@ -6,6 +6,7 @@ use App\EventMenu;
 use App\Menu;
 use App\CacheItem;
 use App\Item;
+use App\EventMenuItem;
 
 use Illuminate\Http\Request;
 
@@ -42,7 +43,26 @@ class EventMenuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $eventMenu = new EventMenu();
+        $eventMenu->type = $request->type;
+        $eventMenu->venue = $request->venue;
+        $eventMenu->name = $request->event_name;
+        $eventMenu->attendences = $request->attendences;
+        $eventMenu->booking_time = $request->booking_time;
+        $eventMenu->event_time = $request->event_time;
+        $eventMenu->save(); 
+        $items = CacheItem::all();
+
+        foreach($items as $item){
+            $eventMenuItem = new EventMenuItem();
+            $eventMenuItem->name = $item->name;
+            $eventMenu->items()->save($eventMenuItem);
+        }
+        \DB::table('cache_items')->truncate();
+        $menus = Menu::pluck('name', 'id');
+
+        return view('eventMenus.create')
+            ->with(compact('menus'));
     }
 
     /**
@@ -115,6 +135,19 @@ class EventMenuController extends Controller
             $cacheitem = CacheItem::find($delete_id);
             $cacheitem->delete();
 
+            $items = Menu::find($menu_id)->items;
+            if(CacheItem::all()){
+                $addedItems = CacheItem::all();
+            }
+            $cacheItemsFetch = CacheItem::pluck('name');
+            $items = $items->diff(Item::whereIn('name',$cacheItemsFetch)->get());
+        }
+        elseif($request->add_extra_item && $request->menu_id){
+            $menu_id = $request->menu_id;
+            $add_extra_item = $request->add_extra_item;
+            $newItemToMenu = new CacheItem();
+            $newItemToMenu->name = $add_extra_item;
+            $newItemToMenu->save();
             $items = Menu::find($menu_id)->items;
             if(CacheItem::all()){
                 $addedItems = CacheItem::all();

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="row">
-    {!! Form::open(['route' => 'menus.store'], ['class' => 'form']) !!}
+    {!! Form::open(['route' => 'event-menus.store'], ['class' => 'form']) !!}
 
     <div class="col-sm-3">
         <div class="form-group">
@@ -11,6 +11,21 @@
         </div>
     </div>
 
+    <div class="col-sm-3">
+        <div class="form-group">
+            {!! Form::label('type', 'Event Type' . ':*') !!}
+            {!! Form::select('type', ['Bia' => __('Bia'), 'Holud' => 'Holud'], null, ['class' => 'form-control select2', 'placeholder' =>'Select Event Type', 'required']); !!}
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+        <div class="form-group">
+            {!! Form::label('venu', 'Venue Type' . ':*') !!}
+            {!! Form::select('venue', ['Sena Maloncho' => __('Sena Maloncho'), 'PSC' => 'PSC', 'RAWA' => 'RAWA'], null, ['class' => 'form-control select2', 'placeholder' => 'Select Event Type', 'required']); !!}
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
 
     <div class="col-sm-3">
         <div class="form-group">
@@ -34,6 +49,18 @@
             [
             'class' => 'form-control input-lg',
             'placeholder' => 'Event Name'
+            ])
+            !!}
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+        <div class="form-group">
+            {!! Form::label('attendences', 'Attendence', ['class' => 'control-label']) !!}
+            {!! Form::text('attendences', null,
+            [
+            'class' => 'form-control input-lg',
+            'placeholder' => 'attendences'
             ])
             !!}
         </div>
@@ -63,7 +90,7 @@
             </div>
         </div>
     </div>
-<div class="clearfix"></div> 
+    <div class="clearfix"></div>
     <div class="col-md-3 col-md-offset-2">
         <table class="table table-striped table-hover ">
             <thead>
@@ -95,7 +122,13 @@
     </div>
 
     <div class="clearfix"></div>
-
+    <div class="form-group">
+        {!! Form::submit('Add Event',
+        ['class' => 'btn btn-info btn-lg',
+        'style' => 'width:100%'
+        ])
+        !!}
+    </div>
     {!! Form::close() !!}
 </div>
 </div>
@@ -114,7 +147,7 @@
                 },
                 success: function(data) {
                     $('#items-list').html(data.items);
-                    if(data.addedItems){
+                    if (data.addedItems) {
                         $('#added-items-list').html(data.addedItems);
                     }
                 }
@@ -136,9 +169,7 @@
                     menu_id: menu_id,
                     "_token": "{{ csrf_token() }}"
                 },
-                success: function(data) {
-                    console.log(data);
-                }
+                success: function(data) {}
             });
         }
 
@@ -151,7 +182,7 @@
             }
         });
 
-        function addItem(item_id,menu_id) {
+        function addItem(item_id, menu_id) {
             $.ajax({
                 type: 'POST',
                 url: "{{ route('eventMenus.action') }}",
@@ -161,16 +192,14 @@
                     "_token": "{{ csrf_token() }}"
                 },
                 success: function(data) {
-                    console.log(data);
                     $('#items-list').html(data.items);
-                    console.log(data);
-                    if(data.addedItems){
+                    if (data.addedItems) {
                         $('#added-items-list').html(data.addedItems);
                     }
                 }
             });
         }
-        
+
         $(document).on('click', "#addItem", function(e) {
             try {
                 var item_id = $(this).val();;
@@ -182,31 +211,33 @@
             e.preventDefault();
         });
 
-        // function addExtraItem(add_extra_item,menu_id) {
-        //     $.ajax({
-        //         type: 'POST',
-        //         url: "{{ route('eventMenus.action') }}",
-        //         data: {
-        //             add_extra_item: add_extra_item,
-        //             menu_id: menu_id,
-        //             "_token": "{{ csrf_token() }}"
-        //         },
-        //         success: function(data) {
-        //             $('#items-list').html(data.items);
-        //             console.log(data);j
-        //             if(data.addedItems){
-        //                 $('#added-items-list').html(data.addedItems);
-        //             }
-        //         }
-        //     });
-        // }
-        // $("#add_extra_item").on('keypress', function(e) {
-        //     var add_extra_item = $(this).val();
-        //     var menu_id = $("#menu_id").val();
-        //     if (e.which == 13) {
-        //         addExtraItem(add_extra_item, menu_id);
-        //     }
-        // });
+        function addExtraItem(add_extra_item, menu_id) {
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('eventMenus.action') }}",
+                data: {
+                    add_extra_item: add_extra_item,
+                    menu_id: menu_id,
+                    "_token": "{{ csrf_token() }}"
+                },
+                success: function(data) {
+                    $('#items-list').html(data.items);
+                    console.log(data);
+                    if (data.addedItems) {
+                        $('#added-items-list').html(data.addedItems);
+                    }
+                }
+            });
+        }
+
+        $("#add_extra_item").on('keypress', function(e) {
+            if (e.which == 13) {
+                var add_extra_item = $(this).val();
+                var menu_id = $("#menu_id").val();
+                e.preventDefault();
+                addExtraItem(add_extra_item, menu_id);
+            }
+        });
 
 
         function deleteItem(item_id, menu_id) {
@@ -220,7 +251,7 @@
                 },
                 success: function(data) {
                     $('#items-list').html(data.items);
-                    if(data.addedItems){
+                    if (data.addedItems) {
                         $('#added-items-list').html(data.addedItems);
                     }
                 }
