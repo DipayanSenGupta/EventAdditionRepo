@@ -107,6 +107,16 @@ class MenuController extends Controller
             Item::find($delete_id)->delete();
             $items = Menu::find($menu_id)->items;
         }
+        else if($request->menu_id && $request->new_menu_name){
+            $menu_id = $request->menu_id;
+            $new_menu_name = $request->new_menu_name;
+            $changedMenu = Menu::find($menu_id);
+            $changedMenu->name = $new_menu_name;
+            $changedMenu->save();
+            $items = Menu::find($menu_id)->items;
+            $newMenuId = $menu_id;
+            $newMenuName = $new_menu_name;
+        }
         else if ($request->menuName) {
             $menu = new Menu();
             $menu->name = $request->menuName;
@@ -142,7 +152,7 @@ class MenuController extends Controller
         $data = array(
             'items'  => $items,
             'newMenuId'  => $newMenuId,
-            'newMenuName' => $newMenuName
+            'newMenuName' => $newMenuName,
         );
         return response()->json($data);
     }
