@@ -16,10 +16,10 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->integer('menu_id');
-            // $table->foreign('menu_id')
-            // ->references('id')->on('menus')
-            // ->onDelete('cascade');
+            $table->unsignedInteger('menu_id');
+            $table->foreign('menu_id')
+            ->references('id')->on('menus')
+            ->onDelete('cascade');
             $table->timestamps();
         });
     }

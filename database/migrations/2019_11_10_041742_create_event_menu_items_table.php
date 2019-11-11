@@ -16,10 +16,10 @@ class CreateEventMenuItemsTable extends Migration
         Schema::create('event_menu_items', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->integer('event_menu_id');
-            // $table->foreign('event_menu_id')
-            // ->references('id')->on('event_menus')
-            // ->onDelete('cascade');
+            $table->unsignedInteger('event_menu_id');
+            $table->foreign('event_menu_id')
+            ->references('id')->on('event_menus')
+            ->onDelete('cascade');
             $table->timestamps();
         });
     }
