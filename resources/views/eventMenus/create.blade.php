@@ -40,6 +40,19 @@
         </div>
     </div>
 
+    <div class="col-sm-3">
+        <div class="form-group">
+
+            {!! Form::label('quantity', 'Add quantity', ['class' => 'control-label']) !!}
+            {!! Form::text('quantity', null,
+            [
+            'class' => 'form-control input-lg',
+            'placeholder' => 'add quantity'
+            ])
+            !!}
+        </div>
+    </div>
+
 
     <div class="col-sm-3">
         <div class="form-group">
@@ -97,6 +110,7 @@
                 <tr class="info">
                     <th>ID </th>
                     <th>Name</th>
+                    <th>Quantity</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -112,6 +126,7 @@
                 <tr class="info">
                     <th>ID </th>
                     <th>Name</th>
+                    <th>Quantity</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -182,13 +197,14 @@
             }
         });
 
-        function addItem(item_id, menu_id) {
+        function addItem(item_id, menu_id,quantity) {
             $.ajax({
                 type: 'POST',
                 url: "{{ route('eventMenus.action') }}",
                 data: {
                     add: item_id,
                     menu_id: menu_id,
+                    quantity: quantity,
                     "_token": "{{ csrf_token() }}"
                 },
                 success: function(data) {
@@ -202,22 +218,24 @@
 
         $(document).on('click', "#addItem", function(e) {
             try {
-                var item_id = $(this).val();;
+                var item_id = $(this).val();
                 var menu_id = $("#menu_id").val();
-                addItem(item_id, menu_id);
+                var quantity = $("#quantity").val();
+                addItem(item_id, menu_id,quantity);
             } catch (ex) {
                 alert('An error occurred and I need to write some code to handle this!');
             }
             e.preventDefault();
         });
 
-        function addExtraItem(add_extra_item, menu_id) {
+        function addExtraItem(add_extra_item, menu_id,quantity) {
             $.ajax({
                 type: 'POST',
                 url: "{{ route('eventMenus.action') }}",
                 data: {
                     add_extra_item: add_extra_item,
                     menu_id: menu_id,
+                    quantity: quantity,
                     "_token": "{{ csrf_token() }}"
                 },
                 success: function(data) {
@@ -234,8 +252,9 @@
             if (e.which == 13) {
                 var add_extra_item = $(this).val();
                 var menu_id = $("#menu_id").val();
+                var quantity = $("#quantity").val();
                 e.preventDefault();
-                addExtraItem(add_extra_item, menu_id);
+                addExtraItem(add_extra_item, menu_id,quantity);
             }
         });
 

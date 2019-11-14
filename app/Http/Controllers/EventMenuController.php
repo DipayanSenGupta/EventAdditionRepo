@@ -121,6 +121,11 @@ class EventMenuController extends Controller
             $item = Item::find($add_id);
             $newItemToMenu = new CacheItem();
             $newItemToMenu->name = $item->name;
+            if($request->quantity){
+                $newItemToMenu->quantity =  $request->quantity;
+            }else{
+                $newItemToMenu->quantity = 'n.a';
+            }
             $newItemToMenu->save();
             $items = Menu::find($menu_id)->items;
             if(CacheItem::all()){
@@ -147,6 +152,11 @@ class EventMenuController extends Controller
             $add_extra_item = $request->add_extra_item;
             $newItemToMenu = new CacheItem();
             $newItemToMenu->name = $add_extra_item;
+            if($request->quantity){
+                $newItemToMenu->quantity =  $request->quantity;
+            }else{
+                $newItemToMenu->quantity = 'n.a';
+            }
             $newItemToMenu->save();
             $items = Menu::find($menu_id)->items;
             if(CacheItem::all()){
@@ -169,6 +179,7 @@ class EventMenuController extends Controller
                 $items .=    '<tr id="item' . $item->id . ' class="active">
             <td>' . $item->id . '</td>
             <td>' . $item->name . '</td>
+            <td>' . $item->quantity . '</td>
             <td width="35%">
             <button
             class="btn btn-primary" id = "addItem" value=' . $item->id . '>Add</button>
@@ -186,6 +197,7 @@ class EventMenuController extends Controller
                 $addedItems .=    '<tr id="item' . $item->id . ' class="active">
             <td>' . $item->id . '</td>
             <td>' . $item->name . '</td>
+            <td>' . $item->quantity . '</td>
             <td width="35%">
             <button
             class="btn btn-danger" id = "deleteItem" value=' . $item->id . '>Delete</button>

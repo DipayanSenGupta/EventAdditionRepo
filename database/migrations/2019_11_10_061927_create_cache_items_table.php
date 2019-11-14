@@ -16,6 +16,7 @@ class CreateCacheItemsTable extends Migration
         Schema::create('cache_items', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('quantity');
             $table->timestamps();
         });
     }

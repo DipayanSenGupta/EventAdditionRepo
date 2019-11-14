@@ -12,16 +12,11 @@
 */
 
 
-Route::resource('events', 'EventController');
 Route::resource('menus', 'MenuController');
 Route::resource('items', 'ItemController');
 Route::resource('event-menus', 'EventMenuController');
 
 Route::post('/menus/menu-change-action', 'MenuController@action')->name('menus.action');;
 Route::post('/event_menus/menu-change-action', 'EventMenuController@action')->name('eventMenus.action');
-
-
-Route::delete('/events/demoItemDelete/{id}', 'EventController@itemDel')->name('events.itemDel');
-
 
 

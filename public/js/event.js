@@ -44,13 +44,14 @@
             }
         });
 
-        function addItem(item_id, menu_id) {
+        function addItem(item_id, menu_id,quantity) {
             $.ajax({
                 type: 'POST',
                 url: "{{ route('eventMenus.action') }}",
                 data: {
                     add: item_id,
                     menu_id: menu_id,
+                    quantity: quantity,
                     "_token": "{{ csrf_token() }}"
                 },
                 success: function(data) {
@@ -64,9 +65,10 @@
 
         $(document).on('click', "#addItem", function(e) {
             try {
-                var item_id = $(this).val();;
+                var item_id = $(this).val();
                 var menu_id = $("#menu_id").val();
-                addItem(item_id, menu_id);
+                var quantity = $("quantity").val();
+                addItem(item_id, menu_id,quantity);
             } catch (ex) {
                 alert('An error occurred and I need to write some code to handle this!');
             }

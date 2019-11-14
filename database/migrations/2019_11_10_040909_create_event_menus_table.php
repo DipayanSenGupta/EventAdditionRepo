@@ -19,8 +19,12 @@ class CreateEventMenusTable extends Migration
             $table->string('type');
             $table->string('venue');
             $table->integer('attendences');
-            $table->dateTime('booking_time');	
-            $table->dateTime('event_time');	
+            $table->dateTime('booking_time');
+            $table->dateTime('event_time');
+            $table->integer('transaction_id')->unsigned();
+
+            $table->foreign('transaction_id')->references('id')->on('transactions')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
