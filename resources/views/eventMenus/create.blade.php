@@ -152,6 +152,29 @@
 @section('customScripts')
 <script>
     $(document).ready(function() {
+
+
+        $('#booking_time').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 0,
+        showMeridian: 1
+    });
+
+    $('#event_time').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 0,
+        showMeridian: 1
+    });
         function showItem(menu_id = "1") {
             $.ajax({
                 type: 'POST',

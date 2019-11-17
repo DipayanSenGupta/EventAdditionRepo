@@ -15,19 +15,9 @@
     <!-- Bootstrap Table CSS -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css">
 
-    <link href= "{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ asset('css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" media="screen">
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
-
-    <!-- Scripts -->
-    <script>
-        window.Laravel = <?php echo json_encode([
-                                'csrfToken' => csrf_token(),
-                            ]); ?>
-    </script>
-
-
 </head>
 
 <body>
@@ -93,43 +83,16 @@
         </nav>
         <div class="container">
             @yield('content')
-
         </div>
     </div>
     <!-- Scripts -->
+    @yield('typeCRUDscripts')
     <script src="/js/app.js"></script>
     <!-- Bootstrap Table Javascript -->
     <script type="text/javascript" src="{{ asset('jquery/jquery-1.8.3.min.js') }}" charset="UTF-8"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
-    <script type="text/javascript" src= "{{ asset('js/bootstrap-datetimepicker.js') }}" charset="UTF-8"></script>
+    <script type="text/javascript" src="{{ asset('js/bootstrap-datetimepicker.js') }}" charset="UTF-8"></script>
     <script src='/js/table.js'></script> <!-- file is in public/js/table.js -->
-    <!-- Custom Scripts -->
-    @yield('customScripts')
-
-   <script>
-    $('#booking_time').datetimepicker({
-        //language:  'fr',
-        weekStart: 1,
-        todayBtn:  1,
-		autoclose: 1,
-		todayHighlight: 1,
-		startView: 2,
-		forceParse: 0,
-        showMeridian: 1
-    });
-
-    $('#event_time').datetimepicker({
-        //language:  'fr',
-        weekStart: 1,
-        todayBtn:  1,
-		autoclose: 1,
-		todayHighlight: 1,
-		startView: 2,
-		forceParse: 0,
-        showMeridian: 1
-    });
-</script>
-
 </body>
 
 </html>

@@ -14,7 +14,9 @@ class TypeController extends Controller
      */
     public function index()
     {
-        //
+        $types = Type::orderBy('id', 'desc')->paginate(8);
+        return view('types.index')
+        ->with(compact('types'));
     }
 
     /**
@@ -24,9 +26,7 @@ class TypeController extends Controller
      */
     public function create()
     {
-        $menus = Type::pluck('name', 'id');
-        return view('types.create')
-        ->with(compact('types'));
+   
     }
 
     /**
@@ -37,7 +37,11 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $type = Type::updateOrCreate(
+        [ 'id' => $request->type_id ],
+        [  'name' => $request->name ]
+        );
+        return Response::json($type);
     }
 
     /**
@@ -59,7 +63,7 @@ class TypeController extends Controller
      */
     public function edit(Type $type)
     {
-        //
+        return Response::json($type);
     }
 
     /**
@@ -82,6 +86,52 @@ class TypeController extends Controller
      */
     public function destroy(Type $type)
     {
-        //
+        $type->delete();
+    }
+
+    public function action(Request $request)
+    {
+        $items = null;
+        if($request->get){
+            $items = Type::all();
+        }
+        if($request->add){
+            $item_name = $request->add;
+            $menu_id = $request->menu_id;
+            $item = new Item();
+            $item->name = $item_name;
+            $item->menu_id = $menu_id;
+            $item->save();
+            $items = Menu::find($menu_id)->items;
+        }
+        
+        else if ($request->menu_id) {
+            $menu_id = $request->menu_id;
+            $items = Menu::find($menu_id)->items;
+        }
+        if($items){
+            foreach ($items as $item) {
+                $items.=    '<tr id="item' . $item->id . ' class="active">
+            <td>' . $item->id . '</td>
+            <td>' . $item->name . '</td>
+            <td width="35%">
+            <button
+            class="btn btn btn-danger" id = "Item" value=' . $item->id . '>Delete</button>
+            <button
+            class="btn btn btn-danger" id = "deleteItem" value=' . $item->id . '>Delete</button>
+            </td>
+          </tr>';
+            }
+        }
+        else{
+           $items.= '<tr id="item' .' class="active">
+            <td> No item to show' .'</td>
+          </tr>';
+        }
+
+        $data = array(
+            'items'  => $items
+        );
+        return response()->json($data);
     }
 }

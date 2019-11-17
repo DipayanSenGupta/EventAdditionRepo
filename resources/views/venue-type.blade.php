@@ -2,44 +2,58 @@
 
 @section('content')
 <div class="row">
-    {!! Form::open(['route' => 'types.store'], ['class' => 'form']) !!}
-
-    <div class="col-sm-3">
-        <div class="form-group">
-            {!! Form::label('type_id', 'Type (Active)' . ':*') !!}
-            {!! Form::select('type_id', $types, 1,['class' => 'form-control select2', 'placeholder' =>'Select Menu Type','required']); !!}
-        </div>
-    </div>
-
 
     <div class="col-sm-3">
         <div class="form-group">
 
-            {!! Form::label('add_item', 'Add Item', ['class' => 'control-label']) !!}
-            {!! Form::text('add_item', null,
+            {!! Form::label('add_type', 'Add Event Type', ['class' => 'control-label']) !!}
+            {!! Form::text('add_type', null,
             [
             'class' => 'form-control input-lg',
-            'placeholder' => 'add item'
+            'placeholder' => 'add type'
             ])
             !!}
         </div>
     </div>
 
     <div class="col-sm-3">
-        <div class="form-group">
-
-            {!! Form::label('add_menu', 'Add Menu', ['class' => 'control-label']) !!}
-            {!! Form::text('add_menu', null,
-            [
-            'class' => 'form-control input-lg',
-            'placeholder' => 'add Menu'
-            ])
-            !!}
-        </div>
+        <br>
+        <button type="button" class="btn btn-info" id="addType">Add Type</button>
     </div>
 
     <div class="clearfix"></div>
     <div class="col-sm-3">
+        <div class="form-group">
+
+            {!! Form::label('add_venue', 'Add Venue', ['class' => 'control-label']) !!}
+            {!! Form::text('add_venue', null,
+            [
+            'class' => 'form-control input-lg',
+            'placeholder' => 'add_venue'
+            ])
+            !!}
+        </div>
+    </div>
+    
+    <div class="col-sm-3">
+        <div class="form-group">
+
+            {!! Form::label('add_address', 'Add Venue Address', ['class' => 'control-label']) !!}
+            {!! Form::text('add_address', null,
+            [
+            'class' => 'form-control input-lg',
+            'placeholder' => 'add_address'
+            ])
+            !!}
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+        <br>
+        <button type="button" class="btn btn-info" id="addVenue">Add Venue</button>
+    </div>
+
+    <!-- <div class="col-sm-3">
         <div class="form-group">
 
             {!! Form::label('change_menu_name', 'Change Menu Name', ['class' => 'control-label']) !!}
@@ -50,14 +64,11 @@
             ])
             !!}
         </div>
-    </div>
-    <div class="col-sm-3">
-        <br>
-        <button type="button" class="btn btn-danger" id="MenuDelete">Menu Delete</button>
-    </div>
-    <div class="clearfix"></div>
+    </div> -->
 
-    <div class="col-md-5 col-md-offset-2">
+    <div class="clearfix"></div>
+    <div class="col-md-3 col-md-offset-2">
+    <span>Event</span>
         <table class="table table-striped table-hover ">
             <thead>
                 <tr class="info">
@@ -66,25 +77,63 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody id="items-list" name="items-list">
+            <tbody id="types-list" name="types-list">
 
             </tbody>
         </table>
     </div>
+
+    <div class="col-md-3 col-md-offset-2">
+    <span>Venue</span>
+        <table class="table table-striped table-hover ">
+            <thead>
+                <tr class="info">
+                    <th>ID </th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="venues-list" name="venues-list">
+
+            </tbody>
+        </table>
+    </div>
+
     <div class="clearfix"></div>
 
-    {!! Form::close() !!}
 </div>
 </div>
 
 @endsection
 @section('customScripts')
 <script>
+        $('#booking_time').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 0,
+        showMeridian: 1
+    });
+
+    $('#event_time').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 0,
+        showMeridian: 1
+    });
     $(document).ready(function() {
         function showItem(menu_id = "1") {
             $.ajax({
                 type: 'POST',
-                url: "{{ route('types.action') }}",
+                url: "{{ route('menus.action') }}",
                 data: {
                     menu_id: menu_id,
                     "_token": "{{ csrf_token() }}"
@@ -98,7 +147,7 @@
         function addItem(menu_id, itemName) {
             $.ajax({
                 type: 'POST',
-                url: "{{ route('types.action') }}",
+                url: "{{ route('menus.action') }}",
                 data: {
                     add: itemName,
                     menu_id: menu_id,
@@ -114,7 +163,7 @@
         function addMenu(menuName) {
             $.ajax({
                 type: 'POST',
-                url: "{{ route('types.action') }}",
+                url: "{{ route('menus.action') }}",
                 data: {
                     menuName: menuName,
                     "_token": "{{ csrf_token() }}"
@@ -136,7 +185,7 @@
         function changeMenuName(menu_id, new_menu_name) {
             $.ajax({
                 type: 'POST',
-                url: "{{ route('types.action') }}",
+                url: "{{ route('menus.action') }}",
                 data: {
                     new_menu_name: new_menu_name,
                     menu_id: menu_id,
@@ -158,7 +207,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: "{{ route('types.action') }}",
+                url: "{{ route('menus.action') }}",
                 data: {
                     itemId: itemId,
                     menu_id: menu_id,
