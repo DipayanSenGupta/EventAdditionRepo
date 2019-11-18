@@ -17,7 +17,7 @@ Route::resource('items', 'ItemController');
 Route::resource('event-menus', 'EventMenuController');
 Route::resource('types', 'TypeController');
 Route::post('/types/action','TypeController@action')->name('types.action');
-
+Route::resource('event-bookings','EventBookingController');
 
 Route::post('/menus/menu-change-action', 'MenuController@action')->name('menus.action');
 Route::post('/event_menus/menu-change-action', 'EventMenuController@action')->name('eventMenus.action');
